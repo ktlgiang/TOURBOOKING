@@ -1,0 +1,25 @@
+package org.example.tourbooking.model;
+
+public class Category {
+    private int id;
+    private String name;
+    private String description;
+    private String icon;
+
+    public Category(int id, String name, String description, String icon) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.icon = icon;
+    }
+
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public String getIcon() { return icon; }
+
+    @Override
+    public String toString() {
+        return id + " - " + name + " (" + description + ")";
+    }
+}

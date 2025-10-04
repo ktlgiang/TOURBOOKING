@@ -1,37 +1,51 @@
 package org.example.tourbooking.utils;
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 import java.util.Properties;
 
 public class DBConnection {
-    private static Connection connection;
+    private static Connection conn = null;
 
     public static Connection getConnection() {
-        if (connection == null) {
-            try {
-                // Load file db.properties
-                Properties props = new Properties();
-                InputStream input = DBConnection.class.getClassLoader().getResourceAsStream("db.properties");
-                props.load(input);
+        if (conn != null) return conn;
 
-                // Lấy thông tin từ file
-                String url = props.getProperty("db.url");
-                String user = props.getProperty("db.username");
-                String pass = props.getProperty("db.password");
-                String driver = props.getProperty("db.driver");
+        try (InputStream input = DBConnection.class.getClassLoader()
+                .getResourceAsStream("db.properties")) {
 
-                // Nạp Driver
-                Class.forName(driver);
-                // Kết nối
-                connection = DriverManager.getConnection(url, user, pass);
-
-                System.out.println("✅ Kết nối thành công MySQL!");
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (input == null) {
+                System.out.println("❌ Không tìm thấy file db.properties!");
+                return null;
             }
+
+            Properties props = new Properties();
+            props.load(input);
+
+            String url = props.getProperty("db.url");
+            String username = props.getProperty("db.username");
+            String password = props.getProperty("db.password");
+            String driver = props.getProperty("db.driver");
+
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url, username, password);
+            System.out.println("✅ Kết nối thành công MySQL!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("❌ Kết nối thất bại!");
         }
-        return connection;
+
+        return conn;
+    }
+
+    public static void closeConnection() {
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+                conn = null;
+                System.out.println("🔒 Đã đóng kết nối MySQL.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

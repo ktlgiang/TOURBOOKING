@@ -1,28 +1,26 @@
 package org.example.tourbooking.dao;
 
-import org.example.tourbooking.model.Customer;
+import org.example.tourbooking.model.Category;
 import org.example.tourbooking.utils.DBConnection;
 import java.sql.*;
 import java.util.*;
 
-public class CustomerDAO {
+public class CategoryDAO {
 
-    public List<Customer> getAllCustomers() {
-        List<Customer> list = new ArrayList<>();
-        String sql = "SELECT * FROM customers";
+    public List<Category> getAllCategories() {
+        List<Category> list = new ArrayList<>();
+        String sql = "SELECT * FROM categories";
 
         try (Connection conn = DBConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Customer c = new Customer(
+                Category c = new Category(
                         rs.getInt("id"),
-                        rs.getString("full_name"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("city"),
-                        rs.getString("country")
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("icon")
                 );
                 list.add(c);
             }

@@ -1,13 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.example.tourbooking.service;
 
-/**
- *
- * @author Quoc Bao
- */
+import org.example.tourbooking.dao.TourDAO;
+import org.example.tourbooking.model.Tour;
+import java.util.List;
+
 public class TourService {
-    
+    private TourDAO tourDAO;
+
+    public TourService() {
+        this.tourDAO = new TourDAO();
+    }
+
+    public List<Tour> getAllTours() {
+        return tourDAO.getAllTours();
+    }
+
+    public Tour getTourById(int id) {
+        return tourDAO.getTourById(id);
+    }
 }
