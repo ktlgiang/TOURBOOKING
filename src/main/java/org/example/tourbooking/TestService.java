@@ -7,18 +7,18 @@ import java.util.List;
 
 public class TestService {
     public static void main(String[] args) {
+        System.out.println("✅ Kết nối thành công MySQL!");
+
         TourService tourService = new TourService();
 
-        // Lấy tất cả tours
-        List<Tour> tours = tourService.getAllTours();
         System.out.println("===== Danh sách Tour =====");
-        for (Tour t : tours) {
+        for (Tour t : tourService.getAllTours()) {
             System.out.println(t);
         }
 
-        // Lấy 1 tour theo ID
-        Tour tour = tourService.getTourById(1);
         System.out.println("===== Tour ID=1 =====");
+        Tour tour = tourService.getTourById(1);
         System.out.println(tour);
     }
 }
+

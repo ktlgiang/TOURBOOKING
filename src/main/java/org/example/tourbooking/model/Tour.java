@@ -110,4 +110,15 @@ public class Tour {
     }
 
     // ...
+    @Override
+    public String toString() {
+        return "Tour{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", duration=" + durationDays + " days" +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
 }

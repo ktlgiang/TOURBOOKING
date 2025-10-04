@@ -5,13 +5,11 @@ import java.sql.*;
 import java.util.Properties;
 
 public class DBConnection {
-    private static Connection conn = null;
+
+    private static final String PROPERTIES_FILE = "db.properties";
 
     public static Connection getConnection() {
-        if (conn != null) return conn;
-
-        try (InputStream input = DBConnection.class.getClassLoader()
-                .getResourceAsStream("db.properties")) {
+        try (InputStream input = DBConnection.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
 
             if (input == null) {
                 System.out.println("❌ Không tìm thấy file db.properties!");
@@ -27,25 +25,12 @@ public class DBConnection {
             String driver = props.getProperty("db.driver");
 
             Class.forName(driver);
-            conn = DriverManager.getConnection(url, username, password);
-            System.out.println("✅ Kết nối thành công MySQL!");
+            return DriverManager.getConnection(url, username, password);
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("❌ Kết nối thất bại!");
-        }
-
-        return conn;
-    }
-
-    public static void closeConnection() {
-        try {
-            if (conn != null && !conn.isClosed()) {
-                conn.close();
-                conn = null;
-                System.out.println("🔒 Đã đóng kết nối MySQL.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return null;
         }
     }
 }

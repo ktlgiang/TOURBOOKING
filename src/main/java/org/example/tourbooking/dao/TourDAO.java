@@ -45,36 +45,43 @@ public class TourDAO {
         return tours;
     }
     public Tour getTourById(int id) {
+        Tour tour = null;
         String sql = "SELECT * FROM tours WHERE id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                return new Tour(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getString("short_description"),
-                        rs.getInt("category_id"),
-                        rs.getInt("destination_id"),
-                        rs.getDouble("price"),
-                        rs.getInt("duration_days"),
-                        rs.getInt("max_participants"),
-                        rs.getInt("min_participants"),
-                        rs.getString("difficulty_level"),
-                        rs.getString("image_url"),
-                        rs.getBoolean("featured"),
-                        rs.getString("status"),
-                        rs.getTimestamp("created_at"),
-                        rs.getTimestamp("updated_at")
-                );
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    tour = new Tour(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("description"),
+                            rs.getString("short_description"),
+                            rs.getInt("category_id"),
+                            rs.getInt("destination_id"),
+                            rs.getDouble("price"),
+                            rs.getInt("duration_days"),
+                            rs.getInt("max_participants"),
+                            rs.getInt("min_participants"),
+                            rs.getString("difficulty_level"),
+                            rs.getString("image_url"),
+                            rs.getBoolean("featured"),
+                            rs.getString("status"),
+                            rs.getTimestamp("created_at"),
+                            rs.getTimestamp("updated_at")
+                    );
+                }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return tour;
     }
+
 
 }
