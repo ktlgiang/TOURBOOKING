@@ -2,18 +2,15 @@ package org.example.tourbooking.client;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class WebSocketClientSingleton {
-
+public class BookingWebSocketClient {
     private static WebSocketClient client;
     private static WebSocketListener listener;
-    private static final Queue<String> pendingMessages = new LinkedList<>();
+    private static final Queue<String> pending = new LinkedList<>();
 
-    // ✅ Interface callback cho UI
     public interface WebSocketListener {
         void onOpen();
         void onMessage(String message);
@@ -21,52 +18,44 @@ public class WebSocketClientSingleton {
         void onError(Exception ex);
     }
 
-    // ✅ Cho UI đăng ký listener
     public static void setListener(WebSocketListener l) {
         listener = l;
     }
 
-    // ✅ Lấy instance client (kết nối nếu chưa có)
     public static WebSocketClient getInstance(String serverUrl) {
         if (client == null || !client.isOpen()) {
             try {
-                final String url = serverUrl; // <-- BẮT BUỘC phải final hoặc effectively final
-
-                client = new WebSocketClient(new URI(url)) {
+                client = new WebSocketClient(new URI(serverUrl)) {
                     @Override
                     public void onOpen(ServerHandshake handshake) {
-                        System.out.println("✅ [Client] Connected to " + url);
+                        System.out.println("✅ [BookingClient] Connected to " + serverUrl);
                         if (listener != null) listener.onOpen();
-
-                        // Gửi hết các message đang chờ
-                        while (!pendingMessages.isEmpty()) {
-                            String msg = pendingMessages.poll();
-                            client.send(msg);
-                            System.out.println("📤 [Client] Flushed pending to " + url + ": " + msg);
+                        while (!pending.isEmpty()) {
+                            String msg = pending.poll();
+                            send(msg);
+                            System.out.println("📤 [BookingClient] Flushed: " + msg);
                         }
                     }
 
                     @Override
                     public void onMessage(String message) {
-                        System.out.println("📩 [Client] Received from " + url + ": " + message);
+                        System.out.println("📩 [BookingClient] Received: " + message);
                         if (listener != null) listener.onMessage(message);
                     }
 
                     @Override
                     public void onClose(int code, String reason, boolean remote) {
-                        System.out.println("❌ [Client] Closed " + url + " | reason: " + reason);
+                        System.out.println("❌ [BookingClient] Closed: " + reason);
                         if (listener != null) listener.onClose(reason);
                     }
 
                     @Override
                     public void onError(Exception ex) {
-                        System.err.println("⚠️ [Client] Error at " + url + ": " + ex.getMessage());
+                        System.err.println("⚠️ [BookingClient] Error: " + ex.getMessage());
                         if (listener != null) listener.onError(ex);
                     }
                 };
-
                 client.connect();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -74,14 +63,13 @@ public class WebSocketClientSingleton {
         return client;
     }
 
-    // ✅ Gửi message an toàn — tự queue nếu chưa sẵn sàng
     public static void sendMessage(String msg) {
         if (client != null && client.isOpen()) {
             client.send(msg);
-            System.out.println("📤 [Client] Sent: " + msg);
+            System.out.println("📤 [BookingClient] Sent: " + msg);
         } else {
-            System.out.println("⏳ [Client] Connection not ready, queueing: " + msg);
-            pendingMessages.add(msg);
+            pending.add(msg);
+            System.out.println("⏳ [BookingClient] Queued: " + msg);
         }
     }
 }

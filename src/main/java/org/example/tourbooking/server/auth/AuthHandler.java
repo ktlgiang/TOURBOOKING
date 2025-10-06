@@ -1,60 +1,111 @@
 package org.example.tourbooking.server.auth;
 
+import org.example.tourbooking.utils.DBConnection;
 import org.json.JSONObject;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class AuthHandler {
 
     public static String handleMessage(String message) {
-        System.out.println("📩 [AuthHandler] Nhận message từ client: " + message);
-
-        JSONObject request;
-        JSONObject response = new JSONObject();
-
         try {
-            request = new JSONObject(message);
+            JSONObject request = new JSONObject(message);
+            String action = request.optString("action", "");
+
+            if ("login".equalsIgnoreCase(action)) {
+                return handleLogin(request);
+            } else if ("register".equalsIgnoreCase(action)) {
+                return handleRegister(request);
+            } else {
+                return new JSONObject()
+                        .put("status", "error")
+                        .put("message", "Hành động không hợp lệ!")
+                        .toString();
+            }
+
         } catch (Exception e) {
-            System.err.println("❌ [AuthHandler] Lỗi parse JSON: " + e.getMessage());
-            response.put("status", "error");
-            response.put("message", "Dữ liệu không hợp lệ!");
-            return response.toString();
+            e.printStackTrace();
+            return new JSONObject()
+                    .put("status", "error")
+                    .put("message", "Lỗi xử lý JSON: " + e.getMessage())
+                    .toString();
         }
+    }
 
-        String action = request.optString("action", "");
-        System.out.println("👉 [AuthHandler] Action = " + action);
+    private static String handleLogin(JSONObject req) {
+        String email = req.optString("email", "");
+        String password = req.optString("password", "");
 
-        switch (action.toLowerCase()) {
-            case "login":
-                String email = request.optString("email", "");
-                String password = request.optString("password", "");
+        String sql = "SELECT id, full_name, email FROM customers WHERE email=? AND password_hash=?";
 
-                System.out.println("🔑 [AuthHandler] Thử đăng nhập với email=" + email + ", password=" + password);
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-                // TODO: sau này gọi CustomerDAO check DB
-                if (email.equals("test@example.com") && password.equals("123")) {
-                    response.put("status", "success");
-                    response.put("message", "Đăng nhập thành công");
-                } else {
-                    response.put("status", "error");
-                    response.put("message", "Sai email hoặc mật khẩu");
-                }
-                break;
+            stmt.setString(1, email);
+            stmt.setString(2, password);
 
-            case "register":
-                System.out.println("📝 [AuthHandler] Xử lý đăng ký");
-                // TODO: gọi CustomerDAO insert DB
-                response.put("status", "success");
-                response.put("message", "Đăng ký thành công");
-                break;
+            ResultSet rs = stmt.executeQuery();
 
-            default:
-                System.err.println("⚠️ [AuthHandler] Action không hợp lệ: " + action);
-                response.put("status", "error");
-                response.put("message", "Hành động không hợp lệ");
+            if (rs.next()) {
+                JSONObject res = new JSONObject();
+                res.put("status", "success");
+                res.put("message", "Đăng nhập thành công");
+                res.put("user_id", rs.getInt("id"));
+                res.put("full_name", rs.getString("full_name"));
+                res.put("email", rs.getString("email"));
+                return res.toString();
+            } else {
+                return new JSONObject()
+                        .put("status", "fail")
+                        .put("message", "Email hoặc mật khẩu không đúng!")
+                        .toString();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JSONObject()
+                    .put("status", "error")
+                    .put("message", "Lỗi CSDL: " + e.getMessage())
+                    .toString();
         }
+    }
 
-        String jsonRes = response.toString();
-        System.out.println("📤 [AuthHandler] Gửi response về client: " + jsonRes);
+    private static String handleRegister(JSONObject req) {
+        String name = req.optString("full_name", "");
+        String email = req.optString("email", "");
+        String password = req.optString("password", "");
 
-        return jsonRes;
+        String sql = "INSERT INTO customers (full_name, email, password_hash, email_verified) VALUES (?, ?, ?, 1)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, name);
+            stmt.setString(2, email);
+            stmt.setString(3, password);
+
+            int rows = stmt.executeUpdate();
+
+            if (rows > 0) {
+                return new JSONObject()
+                        .put("status", "success")
+                        .put("message", "Đăng ký thành công!")
+                        .toString();
+            } else {
+                return new JSONObject()
+                        .put("status", "fail")
+                        .put("message", "Đăng ký thất bại!")
+                        .toString();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JSONObject()
+                    .put("status", "error")
+                    .put("message", "Lỗi CSDL: " + e.getMessage())
+                    .toString();
+        }
     }
 }

@@ -1,0 +1,453 @@
+/* src/main/resources/org/example/tourbooking/client/styles.css */
+
+/* Define global colors for easy modification */
+.root {
+    -primary-color: #00796b; /* Teal */
+    -accent-color: #004d40;  /* Darker Teal */
+    -background-light: #f8f9fa; /* Light Gray */
+    -background-dark: #e9ecef; /* Slightly Darker Gray */
+    -text-dark: #212529;     /* Dark Black */
+    -text-muted: #6c757d;    /* Muted Gray */
+    -success-color: #28a745; /* Green */
+    -success-hover-color: #218838;
+    -danger-color: #dc3545;  /* Red */
+    -danger-hover-color: #c82333;
+
+    -fx-font-family: "Roboto", sans-serif; /* Fallback to generic sans-serif */
+    -fx-background-color: -background-light;
+}
+
+/* ScrollPane */
+.main-scroll-pane {
+    -fx-background-color: -background-light;
+}
+
+.main-container {
+    -fx-background-color: -background-light;
+}
+
+/* Header */
+.header-container {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);
+}
+
+.top-header {
+    -fx-padding: 15 40 10 40;
+}
+
+.header-logo {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-text-fill: -primary-color;
+}
+
+.menu-item {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-size: 15px;
+    -fx-text-fill: -text-dark;
+    -fx-cursor: hand;
+    -fx-padding: 8 12;
+    -fx-background-radius: 5;
+    -fx-alignment: CENTER; /* Center text in menu items */
+}
+
+.menu-item:hover {
+    -fx-text-fill: -primary-color;
+    -fx-background-color: #e3f2fd; /* Light blue hover */
+}
+
+.breadcrumb-container {
+    -fx-background-color: -background-dark;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 10 40 10 40;
+}
+
+.breadcrumb-item {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: -text-muted;
+}
+
+.breadcrumb-separator {
+    -fx-background-color: #adb5bd;
+    -fx-pref-height: 15;
+}
+
+/* Hero Section */
+.hero-section {
+    -fx-background-color: linear-gradient(to bottom, #e0f7fa, #b2ebf2);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);
+    -fx-padding: 80 20 80 20;
+    -fx-alignment: CENTER;
+}
+
+.hero-title {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 48px;
+    -fx-text-fill: -primary-color;
+    -fx-text-alignment: center;
+}
+
+.hero-description {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-size: 20px;
+    -fx-text-fill: -accent-color;
+    -fx-text-alignment: center;
+}
+
+.hero-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-padding: 18 40;
+    -fx-border-radius: 30;
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,121,107,0.4), 10, 0, 0, 5);
+}
+
+.hero-button:hover {
+    -fx-background-color: -accent-color;
+    -fx-effect: dropshadow(gaussian, rgba(0,77,64,0.6), 15, 0, 0, 5);
+}
+
+/* Section Titles (General) */
+.section-title {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 38px;
+    -fx-text-fill: -text-dark;
+}
+
+/* Featured Tours Section */
+.featured-tours-section {
+    -fx-background-color: white;
+    -fx-padding: 60 40 60 40;
+    -fx-alignment: CENTER;
+}
+
+/* Tour Card */
+.tour-card {
+    -fx-background-color: white;
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 8);
+    -fx-cursor: hand;
+    -fx-alignment: TOP_LEFT;
+}
+
+.tour-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,121,107,0.3), 20, 0, 0, 10);
+}
+
+.tour-card-image-placeholder {
+    -fx-fill: #e3f2fd;
+    -fx-arc-width: 15;
+    -fx-arc-height: 15;
+}
+
+.tour-card-title {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 22px;
+    -fx-text-fill: -text-dark;
+}
+
+.tour-card-description {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-size: 15px;
+    -fx-text-fill: -text-muted;
+}
+
+.tour-card-price {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-fill: -primary-color;
+}
+
+.tour-card-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-padding: 10 20;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: normal; /* Override bold if button text is naturally bold */
+    -fx-font-size: 15px;
+}
+
+.tour-card-button:hover {
+    -fx-background-color: -accent-color;
+}
+
+/* All Tours Section */
+.all-tours-section {
+    -fx-background-color: -background-dark;
+    -fx-padding: 60 40 60 40;
+    -fx-alignment: CENTER;
+}
+
+.all-tours-list {
+    -fx-background-color: white;
+    -fx-border-radius: 10;
+    -fx-padding: 15;
+    -fx-font-size: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 4);
+}
+
+/* Register Form Section */
+.register-form-section {
+    -fx-background-color: white;
+    -fx-padding: 60 40 60 40;
+    -fx-alignment: CENTER;
+}
+
+.register-grid-pane {
+    -fx-background-color: -background-light;
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.form-label {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-text-fill: -text-dark;
+    -fx-padding: 5 0 5 0; /* Add top/bottom padding for spacing */
+}
+
+.form-field {
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 8;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-background-color: white;
+}
+
+/* Specific styling for ComboBox button cell */
+.combo-box .list-cell {
+    -fx-text-fill: -text-dark;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #ced4da;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.spinner .increment-arrow-button, .spinner .decrement-arrow-button {
+    -fx-background-color: -primary-color;
+    -fx-background-radius: 4;
+}
+
+.spinner .increment-arrow-button:hover, .spinner .decrement-arrow-button:hover {
+    -fx-background-color: -accent-color;
+}
+
+.spinner .increment-arrow, .spinner .decrement-arrow {
+    -fx-background-color: white;
+}
+
+.date-picker {
+    -fx-background-color: white;
+}
+.date-picker .arrow-button {
+    -fx-background-color: -primary-color;
+    -fx-background-radius: 8;
+}
+.date-picker .arrow-button:hover {
+    -fx-background-color: -accent-color;
+}
+.date-picker .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+
+.confirm-button {
+    -fx-background-color: -success-color;
+    -fx-text-fill: white;
+    -fx-padding: 15 40;
+    -fx-border-radius: 10;
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(40,167,69,0.4), 10, 0, 0, 5);
+}
+
+.confirm-button:hover {
+    -fx-background-color: -success-hover-color;
+    -fx-effect: dropshadow(gaussian, rgba(33,136,56,0.6), 15, 0, 0, 5);
+}
+
+/* My Tours Section */
+.my-tours-section {
+    -fx-background-color: -background-light;
+    -fx-padding: 60 40 60 40;
+    -fx-alignment: CENTER;
+}
+
+.my-tours-table {
+    -fx-background-color: white;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 4);
+}
+
+.my-tours-table .column-header-background {
+    -fx-background-color: -primary-color;
+    -fx-background-radius: 10 10 0 0; /* Rounded top corners */
+}
+
+.my-tours-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-alignment: CENTER;
+}
+
+.my-tours-table .table-row-cell {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: white;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 0 0 1 0;
+}
+
+.my-tours-table .table-cell {
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+    -fx-border-color: transparent; /* Remove cell borders */
+}
+
+/* Align action buttons in table cell */
+.my-tours-table .table-cell:last-child {
+    -fx-alignment: CENTER;
+}
+
+.cancel-button {
+    -fx-background-color: -danger-color;
+    -fx-text-fill: white;
+    -fx-padding: 5 10;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-size: 13px;
+}
+
+.cancel-button:hover {
+    -fx-background-color: -danger-hover-color;
+}
+
+.empty-table-text {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-size: 16px;
+    -fx-text-fill: -text-muted;
+    -fx-text-alignment: center;
+}
+
+/* Contact Section */
+.contact-section {
+    -fx-background-color: white;
+    -fx-padding: 60 40 60 40;
+    -fx-alignment: CENTER;
+}
+
+.contact-info-box, .message-form-box {
+    -fx-padding: 30;
+    -fx-background-color: -background-dark;
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 4);
+}
+
+.contact-info-title, .message-form-title {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 22px;
+    -fx-text-fill: -text-dark;
+    -fx-padding: 0 0 10 0;
+}
+
+.contact-item {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.contact-item-icon {
+    -fx-font-family: "FontAwesome", sans-serif; /* Requires FontAwesome font or similar */
+    -fx-font-size: 20px;
+    -fx-text-fill: -primary-color;
+}
+
+.contact-item-text {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-size: 16px;
+    -fx-text-fill: -text-dark;
+}
+
+.send-message-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-padding: 12 25;
+    -fx-border-radius: 10;
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,121,107,0.3), 8, 0, 0, 4);
+}
+
+.send-message-button:hover {
+    -fx-background-color: -accent-color;
+    -fx-effect: dropshadow(gaussian, rgba(0,77,64,0.5), 12, 0, 0, 6);
+}
+
+/* Footer */
+.footer-container {
+    -fx-background-color: #343a40; /* Darker gray */
+    -fx-padding: 40 40 40 40;
+    -fx-alignment: CENTER;
+}
+
+.footer-logo {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+    -fx-text-fill: -primary-color;
+}
+
+.footer-description, .footer-contact-item, .footer-copyright {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #adb5bd; /* Lighter gray for text */
+    -fx-text-alignment: center;
+}
+
+.footer-description {
+    -fx-font-size: 14px;
+    -fx-max-width: 700;
+}
+
+.footer-contact-item {
+    -fx-font-size: 14px;
+}
+
+.social-icon {
+    -fx-fill: lightgray;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.3), 5, 0, 0, 1);
+}
+
+.social-icon:hover {
+    -fx-fill: white;
+}
+
+.footer-copyright {
+    -fx-font-size: 12px;
+}

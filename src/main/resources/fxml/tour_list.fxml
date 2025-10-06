@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Orientation?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import java.lang.String?>
+<?import java.time.LocalDate?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.tourbooking.client.TourListController"
+            prefWidth="1200" prefHeight="900" fitToWidth="true" vbarPolicy="AS_NEEDED"
+            styleClass="main-scroll-pane">
+
+    <content>
+        <!-- Ở phần đầu giao diện -->
+        <Label fx:id="userEmailLabel"
+               text="Xin chào, người dùng"
+               style="-fx-font-size: 16px; -fx-text-fill: #333;"
+               alignment="CENTER_RIGHT"
+               HBox.hgrow="ALWAYS"/>
+        <!-- ✅ thêm fx:id cho controller có thể lấy được -->
+        <VBox fx:id="tourContainer" spacing="0" styleClass="main-container">
+
+            <!-- Header -->
+            <VBox styleClass="header-container">
+                <HBox spacing="30" alignment="CENTER_LEFT" styleClass="top-header">
+                    <padding>
+                        <Insets top="15" right="40" bottom="10" left="40"/>
+                    </padding>
+                    <Label text="Đăng Ký Tour" styleClass="header-logo"/>
+                    <HBox HBox.hgrow="ALWAYS" spacing="40" alignment="CENTER_RIGHT">
+                        <Label text="Trang chủ" styleClass="menu-item"/>
+                        <Label text="Tour" styleClass="menu-item"/>
+                        <Label text="Đăng ký" styleClass="menu-item"/>
+                        <Label text="Tour của tôi" styleClass="menu-item"/>
+                        <Label text="Liên hệ" styleClass="menu-item"/>
+                    </HBox>
+                </HBox>
+            </VBox>
+
+            <!-- Hero Section -->
+            <VBox spacing="25" alignment="CENTER" styleClass="hero-section">
+                <padding>
+                    <Insets top="80" right="20" bottom="80" left="20"/>
+                </padding>
+                <Label text="Khám Phá Những Điểm Đến Tuyệt Vời" styleClass="hero-title" wrapText="true" maxWidth="800"/>
+                <Label text="Đặt tour du lịch trong mơ với những gói tour tốt nhất, ưu đãi hấp dẫn!"
+                       styleClass="hero-description" wrapText="true" maxWidth="700"/>
+                <Button text="Đặt tour ngay" styleClass="hero-button"/>
+            </VBox>
+
+            <!-- (Các phần còn lại giữ nguyên như bạn có) -->
+
+
+
+            <!-- Featured Tours -->
+            <VBox spacing="30" alignment="CENTER" styleClass="featured-tours-section">
+                <padding>
+                    <Insets top="60" right="40" bottom="60" left="40"/>
+                </padding>
+                <Label text="Tour Nổi Bật" styleClass="section-title">
+                    <padding>
+                        <Insets bottom="20"/> <!-- Line 74 in the provided FXML. This is correct. -->
+                    </padding>
+                </Label>
+                <HBox spacing="40" alignment="CENTER">
+                    <!-- Tour Card 1 -->
+                    <VBox prefWidth="350" spacing="15" styleClass="tour-card">
+                        <padding>
+
+                        </padding>
+                        <Rectangle width="310" height="180" styleClass="tour-card-image-placeholder"/>
+                        <Label text="Tour Núi Phong Cảnh" styleClass="tour-card-title"/>
+                        <Label text="Khám phá những cảnh quan núi non hùng vĩ, trải nghiệm trekking và cắm trại độc đáo."
+                               styleClass="tour-card-description" wrapText="true"/>
+                        <HBox spacing="15" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                            <Label text="2.990.000đ" styleClass="tour-card-price"/>
+                            <Button text="Xem chi tiết" styleClass="tour-card-button"/>
+                        </HBox>
+                    </VBox>
+                    <!-- Tour Card 2 -->
+                    <VBox prefWidth="350" spacing="15" styleClass="tour-card">
+                        <padding>
+
+                        </padding>
+                        <Rectangle width="310" height="180" styleClass="tour-card-image-placeholder"/>
+                        <Label text="Tour Biển Thiên Đường" styleClass="tour-card-title"/>
+                        <Label text="Thư giãn tại những bãi biển nhiệt đới tuyệt đẹp, lặn biển ngắm san hô và thưởng thức hải sản tươi sống."
+                               styleClass="tour-card-description" wrapText="true"/>
+                        <HBox spacing="15" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                            <Label text="3.990.000đ" styleClass="tour-card-price"/>
+                            <Button text="Xem chi tiết" styleClass="tour-card-button"/>
+                        </HBox>
+                    </VBox>
+                    <!-- Tour Card 3 -->
+                    <VBox prefWidth="350" spacing="15" styleClass="tour-card">
+                        <padding>
+
+                        </padding>
+                        <Rectangle width="310" height="180" styleClass="tour-card-image-placeholder"/>
+                        <Label text="Tour Khám Phá Thành Phố" styleClass="tour-card-title"/>
+                        <Label text="Trải nghiệm văn hóa đô thị sôi động, thăm quan các di tích lịch sử và thưởng thức ẩm thực đường phố."
+                               styleClass="tour-card-description" wrapText="true"/>
+                        <HBox spacing="15" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                            <Label text="1.990.000đ" styleClass="tour-card-price"/>
+                            <Button text="Xem chi tiết" styleClass="tour-card-button"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- All Tours Section -->
+            <VBox spacing="25" alignment="CENTER" styleClass="all-tours-section">
+                <padding>
+                    <Insets top="60" right="40" bottom="60" left="40"/>
+                </padding>
+                <Label text="Tất Cả Tour Du Lịch" styleClass="section-title"/>
+                <ListView fx:id="tourListView" prefHeight="250" prefWidth="800" maxWidth="800" styleClass="all-tours-list">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Tour Núi Phong Cảnh - 2.990.000đ"/>
+                            <String fx:value="Tour Biển Thiên Đường - 3.990.000đ"/>
+                            <String fx:value="Tour Khám Phá Thành Phố - 1.990.000đ"/>
+                            <String fx:value="Tour Sa Mạc Huyền Bí - 2.490.000đ"/>
+                            <String fx:value="Tour Rừng Nhiệt Đới - 1.790.000đ"/>
+                            <String fx:value="Tour Đảo Hoang Sơ - 4.490.000đ"/>
+                            <String fx:value="Tour Văn Hóa Cổ Đại - 3.200.000đ"/>
+                            <String fx:value="Tour Phiêu Lưu Mạo Hiểm - 2.800.000đ"/>
+                        </FXCollections>
+                    </items>
+                </ListView>
+            </VBox>
+
+            <!-- Register Form Section -->
+            <VBox spacing="35" alignment="CENTER" styleClass="register-form-section">
+                <padding>
+                    <Insets top="60" right="40" bottom="60" left="40"/>
+                </padding>
+                <Label text="Đăng Ký Tour Du Lịch" styleClass="section-title"/>
+                <GridPane hgap="30" vgap="20" alignment="CENTER" styleClass="register-grid-pane" maxWidth="800">
+                    <padding>
+
+                    </padding>
+
+                    <Label text="Họ và tên:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="nameField" promptText="Nguyễn Văn A" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="350" styleClass="form-field"/>
+
+                    <Label text="Email:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="emailField" promptText="email@example.com" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="350" styleClass="form-field"/>
+
+                    <Label text="Số điện thoại:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="phoneField" promptText="0901234567" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="350" styleClass="form-field"/>
+
+
+                    <Label text="Chọn tour:" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <ComboBox fx:id="tourComboBox" prefWidth="350" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="form-field">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Chọn tour du lịch"/>
+                                <String fx:value="Tour Núi Phong Cảnh - 2.990.000đ"/>
+                                <String fx:value="Tour Biển Thiên Đường - 3.990.000đ"/>
+                                <String fx:value="Tour Khám Phá Thành Phố - 1.990.000đ"/>
+                                <String fx:value="Tour Sa Mạc Huyền Bí - 2.490.000đ"/>
+                                <String fx:value="Tour Rừng Nhiệt Đới - 1.790.000đ"/>
+                                <String fx:value="Tour Đảo Hoang  - 4.490.000đ"/>
+                            </FXCollections>
+                        </items>
+                        <value>
+                            <String fx:value="Chọn tour du lịch"/>
+                        </value>
+                    </ComboBox>
+
+                    <Label text="Số người đi:" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <Spinner min="1" max="20" initialValue="1" GridPane.rowIndex="4" GridPane.columnIndex="1"
+                             prefWidth="350" styleClass="form-field"/>
+
+                    <Label text="Ngày bắt đầu:" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <DatePicker fx:id="startDatePicker" GridPane.rowIndex="5" GridPane.columnIndex="1" prefWidth="350"/>
+
+                    <Label text="Ngày kết thúc:" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <DatePicker fx:id="endDatePicker" GridPane.rowIndex="6" GridPane.columnIndex="1" prefWidth="350"/>
+
+                    <Button text="Xác nhận đăng ký" onAction="#onBookSelected"
+                            GridPane.rowIndex="7" GridPane.columnIndex="0"
+                            GridPane.columnSpan="2" GridPane.halignment="CENTER"
+                            styleClass="confirm-button">
+                        <GridPane.margin>
+                            <Insets top="20"/>
+                        </GridPane.margin>
+                    </Button>
+
+                </GridPane>
+            </VBox>
+
+            <!-- My Tours Section -->
+            <VBox spacing="25" alignment="CENTER" styleClass="my-tours-section">
+                <padding>
+                    <Insets top="60" right="40" bottom="60" left="40"/>
+                </padding>
+                <Label text="Tour Của Tôi" styleClass="section-title"/>
+                <TableView fx:id="myToursTable" prefHeight="300" prefWidth="900" maxWidth="900" styleClass="my-tours-table">
+                    <columns>
+                        <TableColumn fx:id="colTourName" text="Tên tour" prefWidth="250"/>
+                        <TableColumn fx:id="colStartDate" text="Ngày đi" prefWidth="150"/>
+                        <TableColumn fx:id="colPeople" text="Số người" prefWidth="100"/>
+                        <TableColumn fx:id="colStatus" text="Trạng thái" prefWidth="150"/>
+                        <TableColumn fx:id="colAction" text="Thao tác" prefWidth="150"/>
+                    </columns>
+
+
+                <placeholder>
+                        <VBox alignment="CENTER" spacing="20" style="-fx-padding: 50;">
+                            <Label text="Chưa có tour nào được đăng ký&#10;Hãy đăng ký tour đầu tiên của bạn!"
+                                   styleClass="empty-table-text" textAlignment="CENTER"/>
+                        </VBox>
+                    </placeholder>
+                    <!-- Actual data would be populated by a Controller -->
+                </TableView>
+            </VBox>
+
+            <!-- Contact Section -->
+            <VBox spacing="35" alignment="CENTER" styleClass="contact-section">
+                <padding>
+                    <Insets top="60" right="40" bottom="60" left="40"/>
+                </padding>
+                <Label text="Liên Hệ Với Chúng Tôi" styleClass="section-title"/>
+                <HBox spacing="60" alignment="CENTER" maxWidth="1000">
+                    <!-- Contact Info -->
+                    <VBox spacing="25" prefWidth="450" alignment="TOP_LEFT" styleClass="contact-info-box">
+                        <!--                        <padding>-->
+                        <!--                            <Insets all="30"/>-->
+                        <!--                        </padding>-->
+                        <Label text="Thông Tin Liên Hệ" styleClass="contact-info-title"/>
+                        <HBox spacing="15" alignment="CENTER_LEFT" styleClass="contact-item">
+                            <Label text="📞" styleClass="contact-item-icon"/>
+                            <Label text="+84 (028) 123-4567" styleClass="contact-item-text"/>
+                        </HBox>
+                        <HBox spacing="15" alignment="CENTER_LEFT" styleClass="contact-item">
+                            <Label text="✉️" styleClass="contact-item-icon"/>
+                            <Label text="info@dangkytour.vn" styleClass="contact-item-text"/>
+                        </HBox>
+                        <HBox spacing="15" alignment="CENTER_LEFT" styleClass="contact-item">
+                            <Label text="📍" styleClass="contact-item-icon"/>
+                            <Label text="123 Đường Du Lịch, Quận 1, TP.HCM" styleClass="contact-item-text"/>
+                        </HBox>
+                    </VBox>
+                    <!-- Message Form -->
+                    <VBox spacing="20" prefWidth="450" alignment="TOP_LEFT" styleClass="message-form-box">
+                        <!--                        <padding>-->
+                        <!--                            <Insets all="30"/>-->
+                        <!--                        </padding>-->
+                        <Label text="Gửi Tin Nhắn" styleClass="message-form-title"/>
+                        <TextField promptText="Tên của bạn" styleClass="form-field"/>
+                        <TextField promptText="Email của bạn" styleClass="form-field"/>
+                        <TextArea promptText="Nhập tin nhắn của bạn..." prefRowCount="5" styleClass="form-field"/>
+                        <Button text="Gửi tin nhắn" styleClass="send-message-button"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- Footer -->
+            <VBox spacing="25" alignment="CENTER" styleClass="footer-container">
+                <padding>
+                    <Insets top="40" right="40" bottom="40" left="40"/>
+                </padding>
+                <Label text="Đăng Ký Tour" styleClass="footer-logo"/>
+                <Label text="Đối tác tin cậy cho những trải nghiệm du lịch tuyệt vời trên khắp thế giới."
+                       styleClass="footer-description" wrapText="true" maxWidth="700"/>
+                <VBox spacing="8" alignment="CENTER">
+                    <Label text="📞 +84 (028) 123-4567" styleClass="footer-contact-item"/>
+                    <Label text="✉️ info@dangkytour.vn" styleClass="footer-contact-item"/>
+                    <Label text="📍 123 Đường Du Lịch, Quận 1, TP.HCM" styleClass="footer-contact-item"/>
+                </VBox>
+                <HBox spacing="15" alignment="CENTER">
+                    <Circle radius="20" styleClass="social-icon"/>
+                    <Circle radius="20" styleClass="social-icon"/>
+                    <Circle radius="20" styleClass="social-icon"/>
+                    <Circle radius="20" styleClass="social-icon"/>
+                </HBox>
+                <Label text="© 2024 Đăng Ký Tour. Tất cả quyền được bảo lưu." styleClass="footer-copyright"/>
+            </VBox>
+
+        </VBox>
+    </content>
+</ScrollPane>
