@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.example.tourbooking.client.RegisterController"
+           prefWidth="480" prefHeight="520"
+           style="-fx-background-color: linear-gradient(to bottom right, #43cea2, #185a9d);">
+
+    <VBox alignment="CENTER" spacing="20" styleClass="glass">
+
+        <Label text="Tạo tài khoản mới" styleClass="title"/>
+
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-box">
+            <ImageView fitWidth="20" fitHeight="20">
+                <Image url="@../icons/user.png"/>
+            </ImageView>
+            <TextField fx:id="fullNameField" promptText="Họ và tên" styleClass="input-field"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-box">
+            <ImageView fitWidth="20" fitHeight="20">
+                <Image url="@../icons/email.png"/>
+            </ImageView>
+            <TextField fx:id="emailField" promptText="Email" styleClass="input-field"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-box">
+            <ImageView fitWidth="20" fitHeight="20">
+                <Image url="@../icons/phone.png"/>
+            </ImageView>
+            <TextField fx:id="phoneField" promptText="Số điện thoại" styleClass="input-field"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-box">
+            <ImageView fitWidth="20" fitHeight="20">
+                <Image url="@../icons/lock.png"/>
+            </ImageView>
+            <PasswordField fx:id="passwordField" promptText="Mật khẩu" styleClass="input-field"/>
+        </HBox>
+
+        <Button text="Đăng ký" styleClass="btn" onAction="#onRegister"/>
+
+        <HBox alignment="CENTER" spacing="5">
+            <Label text="Đã có tài khoản?" styleClass="hint"/>
+            <Hyperlink text="Đăng nhập" styleClass="link" onAction="#onGoToLogin"/>
+        </HBox>
+
+    </VBox>
+</StackPane>

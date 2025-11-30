@@ -6,13 +6,15 @@ import java.util.Properties;
 
 public class DBConnection {
 
-    private static final String PROPERTIES_FILE = "db.properties";
+    private static final String DEFAULT_FILE = "db.properties";
 
     public static Connection getConnection() {
-        try (InputStream input = DBConnection.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
+        String configFile = System.getenv().getOrDefault("DB_CONFIG", DEFAULT_FILE);
+
+        try (InputStream input = DBConnection.class.getClassLoader().getResourceAsStream(configFile)) {
 
             if (input == null) {
-                System.out.println("❌ Không tìm thấy file db.properties!");
+                System.out.println("❌ Không tìm thấy file cấu hình: " + configFile);
                 return null;
             }
 
@@ -25,6 +27,7 @@ public class DBConnection {
             String driver = props.getProperty("db.driver");
 
             Class.forName(driver);
+            System.out.println("✅ Kết nối thành công database: " + url);
             return DriverManager.getConnection(url, username, password);
 
         } catch (Exception e) {

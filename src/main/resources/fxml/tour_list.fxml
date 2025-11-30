@@ -40,7 +40,15 @@
                         <Label text="Đăng ký" styleClass="menu-item"/>
                         <Label text="Tour của tôi" styleClass="menu-item"/>
                         <Label text="Liên hệ" styleClass="menu-item"/>
+
+                        <!-- ✅ Nút Đăng xuất -->
+                        <Button text="Đăng xuất"
+                                fx:id="logoutButton"
+                                onAction="#onLogout"
+                                style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
                     </HBox>
+
+
                 </HBox>
             </VBox>
 

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TableView?>
+
+<BorderPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.tourbooking.client.AdminController">
+    <left>
+        <VBox fx:id="sideBar" prefWidth="220.0" styleClass="sidebar" alignment="TOP_CENTER">
+            <padding>
+                <Insets top="20.0" />
+            </padding>
+            <Label text="QUẢN TRỊ HỆ THỐNG" styleClass="app-title" />
+            <VBox spacing="10.0" styleClass="nav-menu">
+                <Button text="Quản lý Tour" onAction="#showTourManagement" styleClass="nav-button, nav-active" prefWidth="200.0" />
+                <Button text="Quản lý Booking" onAction="#showBookingManagement" styleClass="nav-button" prefWidth="200.0" />
+                <Button text="Quản lý Người dùng" onAction="#showUserManagement" styleClass="nav-button" prefWidth="200.0" />
+                <padding>
+                    <Insets top="30.0" />
+                </padding>
+            </VBox>
+            <VBox VBox.vgrow="ALWAYS" /> <VBox spacing="10.0" alignment="BOTTOM_CENTER">
+            <Label fx:id="adminUserLabel" text="Xin chào, Admin Name" styleClass="user-label" />
+            <Button fx:id="logoutButton" text="Đăng Xuất" onAction="#onLogout" styleClass="logout-button" prefWidth="180.0" />
+            <padding>
+                <Insets bottom="20.0" />
+            </padding>
+        </VBox>
+        </VBox>
+    </left>
+    <center>
+        <VBox styleClass="content-area" spacing="20.0">
+            <padding>
+                <Insets top="30.0" right="30.0" bottom="30.0" left="30.0" />
+            </padding>
+
+            <VBox fx:id="tourManagementView" styleClass="management-view" spacing="15.0">
+                <Label text="QUẢN LÝ TOUR DU LỊCH" styleClass="section-title" />
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <Button text="Thêm Tour Mới" onAction="#onAddNewTour" styleClass="button-primary" />
+                    <Button text="Tải lại Dữ liệu" styleClass="button-secondary" />
+                </HBox>
+                <TableView fx:id="tourTable" VBox.vgrow="ALWAYS" styleClass="data-table" />
+            </VBox>
+
+            <VBox fx:id="bookingManagementView" styleClass="management-view" spacing="15.0" visible="false" managed="false">
+                <Label text="QUẢN LÝ BOOKING" styleClass="section-title" />
+                <TableView fx:id="bookingTable" VBox.vgrow="ALWAYS" styleClass="data-table" />
+            </VBox>
+
+            <VBox fx:id="userManagementView" styleClass="management-view" spacing="15.0" visible="false" managed="false">
+                <Label text="QUẢN LÝ NGƯỜI DÙNG" styleClass="section-title" />
+                <TableView fx:id="userTable" VBox.vgrow="ALWAYS" styleClass="data-table" />
+            </VBox>
+
+            <VBox VBox.vgrow="ALWAYS" />
+        </VBox>
+    </center>
+</BorderPane>

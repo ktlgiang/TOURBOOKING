@@ -3,13 +3,19 @@ package org.example.tourbooking.client;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import org.example.tourbooking.model.BookingItem;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.stage.Window;
+
 
 public class TourListController {
     @FXML private ListView<String> tourListView;
@@ -22,13 +28,17 @@ public class TourListController {
     @FXML private TableColumn<BookingItem, String> colStartDate;
     @FXML private TableColumn<BookingItem, Number> colPeople;
     @FXML private TableColumn<BookingItem, String> colStatus;
+    @FXML private DatePicker startDatePicker;
+    @FXML private DatePicker endDatePicker;
+
+
 
     private void loadMyBookings() {
         JSONObject req = new JSONObject();
         req.put("action", "get_user_bookings");
         req.put("user_id", currentUserId);
 
-        BookingWebSocketClient.getInstance("ws://localhost:8083/booking");
+        BookingWebSocketClient.getInstance("ws://172.20.10.2:8083/booking");
         BookingWebSocketClient.setListener(new BookingWebSocketClient.WebSocketListener() {
             @Override
             public void onMessage(String message) {
@@ -66,7 +76,7 @@ public class TourListController {
     private int currentUserId;
     private String currentUserEmail;
 
-    private static final String TOUR_SERVER_URL = "ws://localhost:8082/tour";
+    private static final String TOUR_SERVER_URL = "ws://172.20.10.2:8082/tour";
 
     public void setUserInfo(int userId, String email, String fullName, String phone) {
         this.currentUserId = userId;
@@ -79,6 +89,20 @@ public class TourListController {
 
         System.out.println("👤 Thông tin user đã được tự động điền: " + fullName + " | " + email + " | " + phone);
         loadMyBookings(); // 👈 tự tải danh sách tour sau khi đăng nhập
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                if (currentUserId > 0) {
+                    JSONObject logoutMsg = new JSONObject();
+                    logoutMsg.put("action", "logout");
+                    logoutMsg.put("user_id", currentUserId);
+                    AuthWebSocketClient.sendMessage(logoutMsg.toString());
+                    System.out.println("❎ [AutoLogout] Đã tự động đăng xuất khi đóng cửa sổ");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
 
     }
 
@@ -122,6 +146,22 @@ public class TourListController {
                 Platform.runLater(() -> showAlert("Lỗi TourServer: " + ex.getMessage(), Alert.AlertType.ERROR));
             }
         });
+        // 🟢 Khi cửa sổ bị đóng (bấm X)
+        Platform.runLater(() -> {
+            Stage stage = (Stage) Stage.getWindows().filtered(Window::isShowing).get(0);
+            stage.setOnCloseRequest(event -> {
+                try {
+                    JSONObject msg = new JSONObject();
+                    msg.put("action", "logout");
+                    msg.put("user_id", currentUserId);
+                    AuthWebSocketClient.sendMessage(msg.toString());
+                    System.out.println("❎ [AutoLogout] Đã tự động đăng xuất khi đóng cửa sổ");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+
     }
 
     private void requestTourList() {
@@ -147,21 +187,24 @@ public class TourListController {
             return;
         }
 
-        int tourId = 1; // tạm test, sau này bạn có thể lấy id thực
+        if (startDatePicker.getValue() == null || endDatePicker.getValue() == null) {
+            showAlert("Vui lòng chọn ngày bắt đầu và ngày kết thúc!", Alert.AlertType.WARNING);
+            return;
+        }
+
+        int tourId = 1; // sau có thể thay = lấy từ comboBox
         JSONObject request = new JSONObject();
         request.put("action", "book_tour");
         request.put("user_id", currentUserId);
         request.put("tour_id", tourId);
+        request.put("start_date", startDatePicker.getValue().toString());
+        request.put("end_date", endDatePicker.getValue().toString());
 
         System.out.println("📤 [TourListController] Gửi booking: " + request);
-        BookingWebSocketClient.getInstance("ws://localhost:8083/booking");
+        BookingWebSocketClient.getInstance("ws://172.20.10.2:8083/booking");
         BookingWebSocketClient.sendMessage(request.toString());
-        BookingWebSocketClient.setListener(new BookingWebSocketClient.WebSocketListener() {
-            @Override
-            public void onOpen() {
-                System.out.println("✅ [TourListController] Kết nối tới BookingServer!");
-            }
 
+        BookingWebSocketClient.setListener(new BookingWebSocketClient.WebSocketListener() {
             @Override
             public void onMessage(String message) {
                 System.out.println("📩 [TourListController] Phản hồi từ BookingServer: " + message);
@@ -180,27 +223,63 @@ public class TourListController {
                     alert.setContentText(msg);
                     alert.showAndWait();
 
-                    // ✅ Nếu đặt thành công thì tự tải lại danh sách tour
                     if ("success".equals(status)) {
-                        loadMyBookings();
+                        loadMyBookings(); // tải lại danh sách
                     }
                 });
-
             }
 
-            @Override
-            public void onClose(String reason) {
-                Platform.runLater(() -> showAlert("BookingServer ngắt kết nối: " + reason, Alert.AlertType.WARNING));
-            }
-
-            @Override
-            public void onError(Exception ex) {
-                Platform.runLater(() -> showAlert("Lỗi BookingServer: " + ex.getMessage(), Alert.AlertType.ERROR));
-            }
+            @Override public void onOpen() {}
+            @Override public void onClose(String reason) {}
+            @Override public void onError(Exception ex) {}
         });
-
-
     }
+    @FXML
+    private void onLogout() {
+        System.out.println("🚪 [TourListController] Người dùng nhấn nút đăng xuất");
+
+        JSONObject msg = new JSONObject();
+        msg.put("action", "logout");
+        msg.put("user_id", currentUserId);
+        AuthWebSocketClient.sendMessage(msg.toString());
+
+        AuthWebSocketClient.setListener(new AuthWebSocketClient.WebSocketListener() {
+            @Override
+            public void onMessage(String message) {
+                JSONObject resp = new JSONObject(message);
+                if ("success".equals(resp.optString("status"))) {
+                    Platform.runLater(() -> {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
+                            Scene scene = new Scene(loader.load());
+
+                            // 🟢 Thêm CSS cho màn hình login
+                            scene.getStylesheets().add(
+                                    getClass().getResource("/styles/login.css").toExternalForm()
+                            );
+
+
+                            // ✅ Lấy cửa sổ hiện tại (Stage đang mở)
+                            Stage stage = (Stage) Stage.getWindows()
+                                    .filtered(Window::isShowing)
+                                    .get(0);
+
+                            stage.setScene(scene);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                }
+            }
+
+            @Override public void onOpen() {}
+            @Override public void onClose(String reason) {}
+            @Override public void onError(Exception ex) {}
+        });
+    }
+
+
 
 
 }
